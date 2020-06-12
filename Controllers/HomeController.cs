@@ -32,21 +32,28 @@ namespace sm_coding_challenge.Controllers
         [HttpGet]
         public IActionResult Players(string ids)
         {
-            var idList = ids.Split(',');
-            var returnList = new List<PlayerModel>();
-            foreach (var id in idList)
-            {
-                returnList.Add(_dataProvider.GetPlayerById(id));
-            }
+            var returnList = (null != ids) ? _dataProvider.GetPlayersById(ids.Split(",")) : new List<PlayerModel>();
+
+            return Json(returnList);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllPlayers()
+        {
+            var returnList = _dataProvider.GetPlayers();
+
             return Json(returnList);
         }
 
         [HttpGet]
         public IActionResult LatestPlayers(string ids)
         {
-            throw new NotImplementedException("Method Needs to be Implemented");
-        }
+            var returnList = (null != ids) ? _dataProvider.GetLatestPlayers(ids.Split(",")) : new List<PlayerModel>();
 
+            return Json(returnList);
+        }
+        
+ 
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
